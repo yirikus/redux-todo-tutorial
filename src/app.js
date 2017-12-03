@@ -8,12 +8,16 @@ export default class App extends React.Component {
   render() {
     return (
     <div>
+      <input ref={node => {
+        this.input = node;
+      }}/>
       <button onClick={()=>{
           this.props.store.dispatch({
             type: 'ADD_TODO',
-            text: 'test',
+            text: this.input.value,
             id: nextId++
           })
+          this.input.value = '';
         }}>add</button>
         <ul>
           {this.props.todos.map(todo =>
