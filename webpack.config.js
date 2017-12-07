@@ -39,7 +39,7 @@ module.exports = {
        *
        * See: http://webpack.github.io/docs/configuration.html#output-sourcemapfilename
        */
-      sourceMapFilename: '[name].map'
+      sourceMapFilename: 'bundle.map'
 
     },
     module: {

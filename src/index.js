@@ -55,7 +55,9 @@ const store = createStore(todoApp);
 
 const render = () => {
     ReactDOM.render(<App todos= {store.getState().todos}
-                         store={store}/>, document.getElementById('app'));    
+                         visibilityFilter={store.getState().visibilityFilter}
+                         store={store}
+                    />, document.getElementById('app'));    
 }
 
 store.subscribe(render);
