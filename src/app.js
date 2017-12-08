@@ -28,7 +28,7 @@ const Link = ({
 
 class FilterLink extends React.Component {
   componentDidMount() {
-    this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+    this.unsubscribe = this.context.store.subscribe(() => this.forceUpdate());
   }
 
   componentWillUnmount() {
@@ -37,15 +37,19 @@ class FilterLink extends React.Component {
 
   render() {
     const props = this.props;
-    const state = props.store.getState();
+    const {store} = this.context;
+    const state = store.getState();
 
     const onFilterClick = () =>
-      props.store.dispatch({ type: 'SET_VISIBILITY_FILTER', filter: props.filter });
+      store.dispatch({ type: 'SET_VISIBILITY_FILTER', filter: props.filter });
 
     return <Link active={props.filter === state.visibilityFilter}
       onClick={onFilterClick}>{props.children}</Link>
   }
 }
+FilterLink.contextTypes = {
+  store: React.PropTypes.object
+};
 
 const Todo = ({
   onClick,
@@ -88,7 +92,7 @@ const TodoList = ({
   }
 class VisibleTodoList extends React.Component {
   componentDidMount() {
-    this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+    this.unsubscribe = this.context.store.subscribe(() => this.forceUpdate());
   }
 
   componentWillUnmount() {
@@ -96,15 +100,15 @@ class VisibleTodoList extends React.Component {
   }
 
   render() {
-    const props = this.props;
-    const state = props.store.getState();
+    const {store} = this.context;
+    const state = store.getState();
 
     const visibleTodos = getVisibleTodos(
       state.todos,
       state.visibilityFilter);
 
     const onTodoClick = id =>
-      props.store.dispatch({ type: 'TOGGLE_TODO', id });
+      store.dispatch({ type: 'TOGGLE_TODO', id });
 
     return (
       <TodoList
@@ -114,19 +118,25 @@ class VisibleTodoList extends React.Component {
     );
   }
 }
+VisibleTodoList.contextTypes = {
+  store: React.PropTypes.object
+};
 
-const Footer = ({ store }) => (
+const Footer = () => (
 
   <p>show: {' '}
-    <FilterLink filter='SHOW_ALL' store={store}>All</FilterLink>{' '}
-    <FilterLink filter='SHOW_ACTIVE' store={store}>Active</FilterLink>{' '}
-    <FilterLink filter='SHOW_COMPLETED' store={store}>Completed</FilterLink>{' '}
+    <FilterLink filter='SHOW_ALL'>All</FilterLink>{' '}
+    <FilterLink filter='SHOW_ACTIVE'>Active</FilterLink>{' '}
+    <FilterLink filter='SHOW_COMPLETED'>Completed</FilterLink>{' '}
   </p>
 );
 
-const AddTodo = ({
-  store
-}) => {
+/**
+ * 
+ * @param {*} props 
+ * @param {*} context context is always after props!
+ */
+const AddTodo = (props, {store}) => {
   let input;
 
   const onAddClick = (text) => {
@@ -145,14 +155,15 @@ const AddTodo = ({
     </div>
   );
 }
+AddTodo.contextTypes = {
+  store: React.PropTypes.object
+};
 
-const App = ({
-  store
-}) => (
+const App = () => (
     <div>
-      <AddTodo store={store} />
-      <VisibleTodoList store={store} />
-      <Footer store={store} />
+      <AddTodo/>
+      <VisibleTodoList/>
+      <Footer/>
     </div>
   );
 export default App;
