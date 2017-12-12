@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 import './index.css';
 
 let nextId = 0;
@@ -90,37 +91,25 @@ const TodoList = ({
         return todos.filter(t => !t.completed);
     }
   }
-class VisibleTodoList extends React.Component {
-  componentDidMount() {
-    this.unsubscribe = this.context.store.subscribe(() => this.forceUpdate());
+
+  const mapStateToProps = (state) => {
+    return {
+      todos: getVisibleTodos(
+        state.todos,
+        state.visibilityFilter)
+    };
+  }
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      onTodoClick:  (id) => {dispatch({ type: 'TOGGLE_TODO', id })}
+    };
   }
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  render() {
-    const {store} = this.context;
-    const state = store.getState();
-
-    const visibleTodos = getVisibleTodos(
-      state.todos,
-      state.visibilityFilter);
-
-    const onTodoClick = id =>
-      store.dispatch({ type: 'TOGGLE_TODO', id });
-
-    return (
-      <TodoList
-        todos={visibleTodos}
-        onTodoClick={onTodoClick}
-      />
-    );
-  }
-}
-VisibleTodoList.contextTypes = {
-  store: React.PropTypes.object
-};
+  const VisibleTodoList = connect(
+    mapDispatchToProps,
+    mapStateToProps
+  )(TodoList);
 
 const Footer = () => (
 
