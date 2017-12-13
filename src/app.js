@@ -1,18 +1,14 @@
 import React from 'react';
-import Menu from './menu';
-import Content from './content';
+import VisibleTodoList from './VisibleTodolist';
+import AddTodo from './AddTodo';
+import Footer from './Footer';
+import './index.css';
 
-var ITEMS = [
-  {id:1, name: 'Domu', active: false, dest:'/'},
-  {id:2, name: 'Nikam', active: false, dest:''},
-  {id:3, name: 'Pryc', active: false, dest:''},
-]
-
-export default class App extends React.Component {
-  render() {
-    return <div>
-              <Menu items={ITEMS}/>
-              {this.props.children}
-            </div>
-    }
-}
+const App = () => (
+    <div>
+      <AddTodo/>
+      <VisibleTodoList/>
+      <Footer/>
+    </div>
+  );
+export default App;
