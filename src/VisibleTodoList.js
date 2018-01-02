@@ -16,7 +16,7 @@ const getVisibleTodos = (
       case 'SHOW_ACTIVE':
         return todos.filter(t => !t.completed);
     }
-  }
+  };
 
 const TodoList = ({
     todos,
@@ -31,19 +31,15 @@ const TodoList = ({
       </ul>
 );
 
-const mapStateToProps = (state) => {
-    return {
-      todos: getVisibleTodos(
-        state.todos,
-        state.visibilityFilter)
-    };
-  }
+const mapStateToProps = (state) => ({
+  todos: getVisibleTodos(
+    state.todos,
+    state.visibilityFilter)
+})
   
-const mapDispatchToProps = (dispatch) => {
-    return {
+const mapDispatchToProps = (dispatch) => ({
       onTodoClick:  (id) => {dispatch(toggle(id))}
-    };
-  }
+});
 
   /**
    * Note that connect is order dependant!!!!
