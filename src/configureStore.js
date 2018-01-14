@@ -9,7 +9,6 @@ import throttle from 'lodash/throttle';
 const configureStore = () => { 
     const todoApp = combineReducers({
         todos,
-        visibilityFilter
     });
 
     const persistedStore = loadState();
